@@ -2,15 +2,10 @@ from openpyxl import load_workbook
 
 wb = load_workbook('sagatave_eksamenam.xlsx')
 ws = wb['Lapa_0']
-max_row = ws.max_row
 
-count = 0
-
-for row in range(2, max_row + 1):
-    address = ws['D' + str(row)].value
-    city = ws['E' + str(row)].value
-
-    if isinstance(address, str) and 'Adulienas iela' in address and city in ['Valmiera', 'Saulkrasti']:
-        count += 1
+count = sum(
+    1 for row in ws.iter_rows(min_row=2, values_only=True)
+    if isinstance(row[3], str) and 'Adulienas iela' in row[3] and row[4] in ['Valmiera', 'Saulkrasti']
+)
 
 print(count)
